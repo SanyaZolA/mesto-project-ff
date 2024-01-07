@@ -5,16 +5,17 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="main.css" rel="stylesheet">
   <title>Mesto</title>
 </head>
 <body class="page">
 <div class="page__content">
   <header class="header page__section">
-    <img src="<%=require('../images/logo.svg')%>" alt="Логотип проекта масто" class="header__logo">
+    <img src="<%=require('../images/logo.svg')%>" alt="Логотип проекта Место" class="header__logo">
   </header>
   <main class="content">
     <section class="profile page__section">
-      <div class="profile__image" style="background-image: url('./images/avatar.jpg');"></div>
+      <img src="<%=require('../images/avatar.jpg')%>" alt="Аватар пользователя" class="profile__image">
       <div class="profile__info">
         <h1 class="profile__title">Жак-Ив Кусто</h1>
         <button class="profile__edit-button" type="button"></button>
@@ -22,14 +23,14 @@
       </div>
       <button class="profile__add-button" type="button"></button>
     </section>
-    <section class="places page__section">4uaQgvIIcGsagwYyvms4S
+    <section class="places page__section">
       <ul class="places__list">
       </ul>
     </section>
   </main>
   <footer class="footer page__section">
     <p class="footer__copyright">
-      © 2021 Mesto Russia
+      © 2023 Mesto Russia
     </p>
   </footer>
   <div class="popup popup_type_edit">
