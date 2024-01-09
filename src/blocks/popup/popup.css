@@ -1,6 +1,6 @@
 @import url('./__content/popup__content.css');
 @import url('./__content/_content/popup__content_content_image.css');
-@import url('./__close/popup__close.css');
+@import url('./__close-button/popup__close-button.css');
 @import url('./__title/popup__title.css');
 @import url('./__form/popup__form.css');
 @import url('./__input/popup__input.css');
@@ -10,14 +10,15 @@
 
 .popup {
   font-family: 'Inter', Arial, sans-serif;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, .5);
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
   position: fixed;
   top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 10;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.3s linear;
 }

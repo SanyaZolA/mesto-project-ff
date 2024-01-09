@@ -5,7 +5,6 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="main.css" rel="stylesheet">
   <title>Mesto</title>
 </head>
 <body class="page">
@@ -33,38 +32,39 @@
       © 2023 Mesto Russia
     </p>
   </footer>
-  <div class="popup popup_type_edit">
+
+  <section class="popup popup_type_edit">
     <div class="popup__content">
-      <button type="button" class="popup__close"></button>
-      <h3 class="popup__title">Редактировать профиль</h3>
+      <button type="button" class="popup__close-button"></button>
+      <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="edit-profile">
         <input type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required>
         <input type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
-  </div>
-  <div class="popup popup_type_new-card">
+  </section>
+
+  <section class="popup popup_type_new-card">
     <div class="popup__content">
-      <button type="button" class="popup__close"></button>
-      <h3 class="popup__title">Новое место</h3>
+      <button type="button" class="popup__close-button"></button>
+      <h2 class="popup__title">Новое место</h2>
       <form class="popup__form" name="new-place">
         <input type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required>
         <input type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
-    </div>
-  </div>
-  <div class="popup popup_type_image">
+      </div>
+  </section>
+
+  <section class="popup popup__zoom popup_type_image">
     <div class="popup__content popup__content_content_image">
-      <button type="button" class="popup__close"></button>
+      <button type="button" class="popup__close-button"></button>
       <img src="" alt="" class="popup__image">
-      <p class="popup__caption"></p>
+      <figcaption class="popup__caption"></figcaption>
     </div>
-  </div>
+  </section>
 </div>
-<script src="./scripts/cards.js"></script>
-<script src="./scripts/index.js" defer></script>
 
 <template id="card-template">
   <li class="places__item card">
