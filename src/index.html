@@ -16,9 +16,9 @@
     <section class="profile page__section">
       <img src="<%=require('../images/avatar.jpg')%>" alt="Аватар пользователя" class="profile__image">
       <div class="profile__info">
-        <h1 class="profile__title">Жак-Ив Кусто</h1>
+        <h1 class="profile__title"></h1>
         <button class="profile__edit-button" type="button"></button>
-        <p class="profile__description">Исследователь океана</p>
+        <p class="profile__description"></p>
       </div>
       <button class="profile__add-button" type="button"></button>
     </section>
@@ -37,7 +37,7 @@
     <div class="popup__content">
       <button type="button" class="popup__close-button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form" name="edit-profile"novalidate>
+      <form class="popup__form" name="edit-profile" novalidate>
 
         <input type="text" id="name__input" name="name" class="popup__input popup__input_type_profile-name" pattern="^[\-A-Za-zа-яА-яё\s]+$"  data-error-message="Разрешены латинские и кириллические буквы, знаки дефиса и пробелы." placeholder="Имя" minlength="2" maxlength="40" required>
         <span class="name__input-error popup__input-error"></span>
@@ -61,6 +61,7 @@
 
         <input type="url" id="url__input" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
         <span class="url__input-error popup__input-error"></span>
+
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
       </div>
@@ -80,9 +81,11 @@
     <img class="card__image" src="" alt="" />
     <button type="button" class="card__delete-button"></button>
     <div class="card__description">
-      <h2 class="card__title">
-      </h2>
-      <button type="button" class="card__like-button"></button>
+      <h2 class="card__title"></h2>
+        <div class="card__like-container">    
+          <button type="button" class="card__like-button"></button>
+          <span class="card__like-counter"></span>
+        </div>
     </div>
   </li>
 </template>
