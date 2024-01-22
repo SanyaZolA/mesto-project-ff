@@ -11,19 +11,20 @@ const config = {
   }
 }
 
-const checkResponse = (res) => {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка ${res.status}`);
-};
 
-
-export const receiptUserInfo = () => {
+export const userInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
-  }).then((res) =>
-  checkResponse(res))
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status} при добавлении лайка`).catch(
+      (err) => {
+        console.log(err);
+      }
+    );
+  });
 };
 
 export const updateUserInfo = (profileName, profileWho, profileAvatar) => {
@@ -36,24 +37,35 @@ export const updateUserInfo = (profileName, profileWho, profileAvatar) => {
       avatar: profileAvatar,
     }),
   })
-    .then((res) => checkResponse(res)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка ${res.status} при добавлении лайка`);
+    })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
       renderLoading(false);
-    }))
+    });
 };
 
-export const loadingListCards = () => {
+export const initialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     method: "GET",
     headers: config.headers,
-  })
-  .then((res) => checkResponse(res))
-  };
-
-
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status} при добавлении лайка`).catch(
+      (err) => {
+        console.log(err);
+      }
+    );
+  });
+};
 
 export const addCard = (inputNameCard, inputUrlFoto) => {
   return fetch(`${config.baseUrl}/cards`, {
@@ -62,47 +74,65 @@ export const addCard = (inputNameCard, inputUrlFoto) => {
     body: JSON.stringify({
       name: inputNameCard,
       link: inputUrlFoto,
-    })
-  }).then((res) => checkResponse(res))
-};
-
-export const delCard = (id) => {
-  return fetch(`${config.baseUrl}/cards/${id}`, {
-    method: "DELETE",
-    headers: config.headers,
-  }).then((res) => checkResponse(res)
-    .catch(
+    }),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status} при добавлении лайка`).catch(
       (err) => {
         console.log(err);
       }
-    )
-  );
+    );
+  });
+};
+
+export const DelCard = (id) => {
+  return fetch(`${config.baseUrl}/cards/${id}`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status} при добавлении лайка`).catch(
+      (err) => {
+        console.log(err);
+      }
+    );
+  });
 };
 
 export const removeLike = (id) => {
   return fetch(`${config.baseUrl}/cards/likes/${id}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => checkResponse(res)
-    .catch(
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status} при добавлении лайка`).catch(
       (err) => {
         console.log(err);
       }
-    )
-  );
+    );
+  });
 };
 
 export const addLike = (id) => {
   return fetch(`${config.baseUrl}/cards/likes/${id}`, {
     method: "PUT",
     headers: config.headers,
-  }).then((res) => checkResponse(res)
-    .catch(
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status} при добавлении лайка`).catch(
       (err) => {
         console.log(err);
       }
-    )
-  );
+    );
+  });
 };
 
 export const changeAvatar = (linkAvatar) => {
@@ -113,13 +143,16 @@ export const changeAvatar = (linkAvatar) => {
       avatar: linkAvatar.value,
     }),
   })
-    .then((res) => checkResponse(res)
-      .catch(
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка ${res.status} при изменении аватара`).catch(
         (err) => {
           console.log(err);
         }
-      )
-    )
+      );
+    })
     .finally(() => {
       renderLoading(false);
     });
