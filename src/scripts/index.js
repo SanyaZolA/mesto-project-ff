@@ -2,12 +2,13 @@ import '../pages/index.css';
 import { placesList, createNewPost } from './card.js'; 
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation, clearValidation } from './validation.js';
-import { userInfo, updateUserInfo, initialCards, addCard, changeAvatar} from './api.js';
+import { receiptUserInfo, updateUserInfo, loadingListCards, addCard, changeAvatar} from './api.js';
 
 const content = document.querySelector('.content');
 const popupProfile = document.querySelector('.popup_type_edit');               // присваивание элементов для попап профиля.
 const popupAddFoto = document.querySelector('.popup_type_new-card');           // присваивание элементов для попап картинок.
 const popupAvatar = document.querySelector('.popup_change-avatar');            // присваивание элементов для попап профиля.
+const popupZoom = document.querySelector('.popup_type_image');        // присваивание элементов для открытия картинки.  
 
 // //----------------------------------НАХОЖДЕНИЕ КНОПОК---------------------------------------------------------------------------
 const buttonEditPopupProfile = content.querySelector('.profile__edit-button'); // открытие редактирования профиля.
@@ -23,18 +24,23 @@ const inputNameProfile = popupProfile.querySelector('.popup__input_type_profile-
 const inputAboutProfile = popupProfile.querySelector('.popup__input_type_profile-about');        // ввод 'о себе' в попап профиля.
 const inputNameCard = popupAddFoto.querySelector('.popup__input_type_card-name');                // ввод название в попап картинок.
 const inputUrlFoto = popupAddFoto.querySelector('.popup__input_type_url');                       // ввод ссылки в попап картинок.
-const inputAvatar = popupAvatar.querySelector('.popup__input_type_avatar');
 
 // //----------------------------------НАХОЖДЕНИЕ ПОЛЕЙ ВВОДА ДЛЯ РЕДАКТИРОВАНИЯ---------------------------------------------------
 const profileName = content.querySelector('.profile__title');                            // ввод имени в попап профиля.
-const profileWho = content.querySelector('.profile__description');                       // ввод 'о себе' в попап профиля.                  
+const profileWho = content.querySelector('.profile__description');                       // ввод 'о себе' в попап профиля.
+
+// //----------------------------------НАХОЖДЕНИЕ КАРТИНОК/ТЕКСТА ДЛЯ ЗУМА----------------------------------------------------------------
+const imageZoom = popupZoom.querySelector('.popup__image');          // для зума ищем элемент картинки
+const signatureZoom = popupZoom.querySelector('.popup__caption');    // для зума ищем элемент подписи
 
 // //----------------------------------НАХОЖДЕНИЕ ПОЛЕЙ ВВОДА ДЛЯ СМЕНЫ АВАТАРА---------------------------------------------------                 
 const editAvatar = document.querySelector('.profile__image');
 const avatarStyles = editAvatar.style;
 const avatarFormElement = document.querySelector('#popupAvatar');
 const linkAvatar = avatarFormElement.querySelector('#url__input');
-const buttin = document.querySelectorAll('.popup__button');
+const buttonsSave = document.querySelectorAll('.popup__button');
+export let userID;
+
 // //----------------------------------ОТКРЫТИЕ ПОПАПОВ ПРОФИЛЯ И КАРТИНОК------------------------------------------------
 
 const validationConfig = {
@@ -46,19 +52,24 @@ const validationConfig = {
   errorClass: "popup__input-error_active",
 };
 
-userInfo(profileName, profileWho, editAvatar); // инициализаиция имени и 'о себе' при загрузки страницы
+Promise.all
+([receiptUserInfo(), loadingListCards()])
+  .then(([profile]) => {
+    profileName.textContent = profile.name;
+    profileWho.textContent = profile.about;
+    let linkAvatar = profile.avatar;
+    avatarStyles.backgroundImage = `url('${linkAvatar}')`;
+    userID = profile._id;
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-initialCards().then((card) => {
-  initializeList(card);
-});
-
-Promise.all([userInfo(), initialCards()]).then(([profile]) => {
-  profileName.textContent = profile.name;
-  profileWho.textContent = profile.about;
-  let linkAvatar = profile.avatar;
-
-  avatarStyles.backgroundImage = `url('${linkAvatar}')`;
-});
+  loadingListCards().then((card) => {
+    initializeList(card)
+  })
+  .catch((err) => {
+      console.log(err)})
 
 function initializeList(list) {
   // создаётся список картинок для отображения на странице.
@@ -85,6 +96,7 @@ function openPopupProfile() {
 buttonEditPopupProfile.addEventListener("click", () => {
   openPopupProfile();
 });
+
 buttonOpenPopupAddFoto.addEventListener("click", () => {
   openPopup(popupAddFoto), clearValidation(popupAddFoto, validationConfig);
 });
@@ -127,25 +139,25 @@ function handleAddFormSubmit(evt) {
   renderLoading(true);
   evt.preventDefault(); // сброс стандартной отправки, перезагрузки картинок.
   addCard(inputNameCard.value, inputUrlFoto.value)
-    .then((res) => res.json())
-    .then((data) => {
+  .then((data) => {
       placesList.prepend(
-        createNewPost(data, data.name, data.link, data.likes.length, data._id)
-      );
-    })
+        createNewPost(data, data.name, data.link, data.likes.length, data._id))})
+    .catch((err) => {
+        console.log(err); // "Что-то пошло не так: ..."
+      })
     .finally(() => {
-      renderLoading(false);
-    });
-  inputNameCard.value = "";
-  inputUrlFoto.value = "";
-  closePopup(popupAddFoto); // сбрасывает форму.
+      closePopup(popupAddFoto)})
+      .finally(() => {
+        renderLoading(false)});
+      inputNameCard.value = ""; 
+      inputUrlFoto.value = ""; 
 };
 
 formAddFoto.addEventListener("submit", handleAddFormSubmit); // вешаем событие(закрыть) на событие 'sudmit' - отправка фото в список
 
 export function renderLoading(isLoading) {
-  const buttin = document.querySelectorAll(".popup__button");
-  buttin.forEach((data) => {
+
+  buttonsSave.forEach((data) => {
     if (isLoading) {
       data.textContent = "Сохранить...";
     } else {
@@ -153,5 +165,14 @@ export function renderLoading(isLoading) {
     }
   });
 }
+
+export function openZoomPopup(evt) {
+  // функция для открытия зума
+  imageZoom.src = evt.target.src; // берет ссылку из определенного поста (кликнутого);
+  imageZoom.alt = evt.target.alt; // берет ссылку из определенного поста (кликнутого);
+  signatureZoom.textContent = evt.target.alt; // берет текст для зума из определенного поста (кликнутого);
+  openPopup(popupZoom); // и собственно открываем.
+}
+;
 
 enableValidation(validationConfig);  
