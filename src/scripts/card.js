@@ -31,7 +31,7 @@ export function createNewPost(
     likeCard(evt, _id, likeСounter);
   });
 
-  if (isOwnerCard(item.owner._id, buttonDelete, userID)) {
+  if (isOwnerCard(item.owner._id, buttonDelete, userID.textContent)) {
     buttonDelete.addEventListener("click", (evt) => {
       deleteCard(evt, _id);
     });
@@ -86,7 +86,7 @@ function likeCard(evt, id, likecounter) {
 // лайки остаются после обновления страницы
 function likesCheck(item, likeButton, userID) {
   item.forEach(function (element) {
-    if (element._id === userID) {
+    if (element._id === userID.textContent) {
       likeButton.classList.add("card__like-button_is-active");
     }
   });

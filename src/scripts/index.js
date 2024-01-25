@@ -50,7 +50,7 @@ const editAvatar = document.querySelector(".profile__image");
 const avatarStyles = editAvatar.style;
 const avatarFormElement = document.querySelector("#popupAvatar");
 const linkAvatar = avatarFormElement.querySelector("#url__input");
-let userID;
+const userID = {};
 
 // //----------------------------------ОТКРЫТИЕ ПОПАПОВ ПРОФИЛЯ И КАРТИНОК------------------------------------------------
 
@@ -69,7 +69,7 @@ Promise.all([receiptUserInfo(), loadingListCards()])
     profileWho.textContent = profile.about;
     let linkAvatar = profile.avatar;
     avatarStyles.backgroundImage = `url('${linkAvatar}')`;
-    userID = profile._id;
+    userID.textContent = profile._id;
     initializeList(card);
   })
   .catch((err) => {
@@ -175,7 +175,9 @@ function handleAddFormSubmit(evt) {
           data.likes,
           data._id,
           userID,
-          openZoomPopup
+          openZoomPopup,
+          inputNameCard.value = "",
+          inputUrlFoto.value = "",
         )
       );
       closePopup(popupAddFoto);
@@ -186,8 +188,6 @@ function handleAddFormSubmit(evt) {
     .finally(() => {
       renderLoading(false, button);
     });
-  inputNameCard.value = "";
-  inputUrlFoto.value = "";
 }
 
 formAddFoto.addEventListener("submit", handleAddFormSubmit); // вешаем событие(закрыть) на событие 'sudmit' - отправка фото в список
