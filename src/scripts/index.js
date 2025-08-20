@@ -207,4 +207,18 @@ function openZoomPopup(evt) {
   signatureZoom.textContent = evt.target.alt; // берет текст для зума из определенного поста (кликнутого);
   openPopup(popupZoom); // и собственно открываем.
 }
+
+function dragstart_handler(ev) {
+  // Добавить id целевого элемента в объект передачи данных
+  ev.dataTransfer.setData("text/plain", ev.target.id);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  // Найти элемент по id
+  const element = document.getElementById("p1");
+  // Добавить обработчик события `dragstart`
+  element.addEventListener("dragstart", dragstart_handler);
+});
+
+
 enableValidation(validationConfig);

@@ -91,3 +91,31 @@ function likesCheck(item, likeButton, userID) {
     }
   });
 }
+
+function* generatePermutations(items) {
+    function* doGeneratePermutations(index) {
+        if (index === items.length) {
+            // возвращаем копию массива после последней перестановки
+            yield items.slice(0, items.length);
+            return;
+        }
+        // переставляем элементы в массиве начиная с index
+        for (let i = index; i < items.length; i++) {
+            // обмениваем значения двух элементов массива
+            // при деструктурировании слева мы указываем именно переменные,
+            // куда нужно записать элементы справа
+            [items[index], items[i]] = [items[i], items[index]];
+            // и повторяем перестановки со следующего шага
+            // или возвращаем результат, если дошли до конца
+            yield* doGeneratePermutations(index + 1);
+            // возвращаем элементы на место
+            [items[index], items[i]] = [items[i], items[index]];
+        }
+    }
+    yield* doGeneratePermutations(0);
+}
+const items = [1, 2, 3];
+const permutations = generatePermutations(items);
+for (let perm of permutations) {
+    console.log("Перестановка:", perm);
+}

@@ -82,3 +82,6 @@ export const changeAvatar = (linkAvatar) => {
     }),
   }).then((res) => checkResponse(res));
 };
+
+
+
